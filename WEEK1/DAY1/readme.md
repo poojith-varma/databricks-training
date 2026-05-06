@@ -1,14 +1,5 @@
-Folder Structure
-
-week1/
-│
-└── day1/
-    │
-    ├── datacreation.sql
-    ├── day1_queries.sql
-    ├── outputs.md
-    └── README.md
-
+Files created:
+datacreation.sql, day1_queries.sql, outputs.md, README.md
 
 Tools Used
 
