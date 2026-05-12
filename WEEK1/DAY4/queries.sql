@@ -78,13 +78,3 @@ LEAD(o.total_amount) OVER (
 FROM orders o
 JOIN customers c 
 ON o.customer_id = c.customer_id;
-
--- 11
-SELECT order_id, order_date, total_amount,
-LAG(total_amount) OVER (
-    ORDER BY order_date, order_id
-) AS previous_order_amount,
-total_amount - LAG(total_amount) OVER (
-    ORDER BY order_date, order_id
-) AS difference_between_orders
-FROM orders;
