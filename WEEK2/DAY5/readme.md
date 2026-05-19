@@ -39,7 +39,7 @@ based data analysis interviews, making them essential for real-world data work.
 
 ---
 
-📌 Day 5 Summary: Advanced Analytics & Window Functions
+## 📌 Day 5 Summary: Advanced Analytics & Window Functions
 🛠️ Core Techniques Mastered
 Advanced Window Functions: Covered complex analytical patterns including moving averages, percentile-based grouping using NTILE(), and isolated data fetching (e.g., retrieving the first and last transactions per customer using ROW_NUMBER()).
 
