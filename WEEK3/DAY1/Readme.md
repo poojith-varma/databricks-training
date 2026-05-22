@@ -37,10 +37,12 @@ This assignment focuses on mastering SQL Window Functions for ranking, partition
 
 🔹 City-wise Order Analysis
 
+🔹 Salary & Date Ranking
+
+🔹 Analytical SQL Queries
+
 📌 SUMMARY
 
 Today, I strengthened my understanding of SQL Window Functions and analytical query processing and practiced these queries while learning.
 
-🔹 Salary & Date Ranking
 
-🔹 Analytical SQL Queries
