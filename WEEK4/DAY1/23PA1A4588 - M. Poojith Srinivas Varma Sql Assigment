@@ -1,0 +1,247 @@
+SQL ASSIGNMENT – 23PA1A4588 
+
+Schema:  
+CREATE TABLE departments (  
+dept_id INT PRIMARY KEY,  
+dept_name VARCHAR(50)  
+);  
+CREATE TABLE employees (  
+emp_id INT PRIMARY KEY,  
+emp_name VARCHAR(100),  
+dept_id INT,  
+salary DECIMAL(10,2),  
+hire_date DATE,  
+manager_id INT,  
+FOREIGN KEY (dept_id) REFERENCES departments(dept_id)  
+);  
+CREATE TABLE customers (  
+customer_id INT PRIMARY KEY,  
+customer_name VARCHAR(100),  
+city VARCHAR(50)  
+);  
+CREATE TABLE orders (  
+order_id INT PRIMARY KEY,  
+customer_id INT,  
+order_date DATE,  
+amount DECIMAL(10,2),  
+FOREIGN KEY (customer_id) REFERENCES customers(customer_id)  
+);  
+INSERT INTO departments VALUES  
+(1,'Engineering'),  
+(2,'Data'),  
+(3,'Finance'),  
+(4,'HR'),  
+(5,'Sales');  
+INSERT INTO employees VALUES  
+(101,'John',1,120000,'2018-01-15',NULL),  
+(102,'Mike',1,95000,'2019-03-10',101),  
+(103,'David',1,90000,'2021-06-20',101),  
+(104,'Sarah',2,140000,'2017-08-25',NULL),  
+(105,'Priya',2,110000,'2020-02-14',104),  
+(106,'Ravi',2,105000,'2022-01-10',104),  
+(107,'Anil',2,85000,'2023-05-12',105),  
+(108,'Emma',3,125000,'2016-11-18',NULL),  
+(109,'Robert',3,85000,'2020-04-21',108),  
+(110,'Sophia',4,95000,'2021-09-11',NULL),  
+(111,'Chris',4,65000,'2024-01-15',110),  
+(112,'James',5,130000,'2018-12-05',NULL),  
+(113,'Linda',5,100000,'2019-10-10',112),  
+(114,'Kevin',5,95000,'2022-03-15',112),  
+(115,'Nancy',5,75000,'2024-06-01',113);  
+INSERT INTO customers VALUES  
+(1,'Amazon','Hyderabad'),  
+(2,'Google','Bangalore'),  
+(3,'Microso ','Hyderabad'),  
+(4,'Ne lix','Mumbai'),  
+(5,'Meta','Delhi'),  
+(6,'Adobe','Pune'),  
+(7,'Amazon','Hyderabad');  
+INSERT INTO orders VALUES  
+(1001,1,'2024-01-05',25000),  
+(1002,2,'2024-01-10',45000),  
+(1003,1,'2024-02-02',30000),  
+(1004,3,'2024-02-15',55000),  
+(1005,2,'2024-03-01',70000),  
+(1006,4,'2024-03-18',15000),  
+(1007,1,'2024-04-10',45000),  
+(1008,5,'2024-04-25',85000),  
+(1009,3,'2024-05-05',35000),  
+(1010,6,'2024-05-20',40000),  
+(1011,2,'2024-06-10',95000),  
+(1012,5,'2024-06-15',25000),  
+(1013,1,'2024-07-01',60000),  
+(1014,4,'2024-07-08',20000),  
+(1015,2,'2024-08-10',55000),  
+(1016,3,'2024-08-15',65000),  
+(1017,5,'2024-09-01',45000),  
+(1018,1,'2024-09-20',50000),  
+(1019,6,'2024-10-05',30000),  
+(1020,2,'2024-10-22',80000); 
+
+QUERY 1 : 
+select e.emp_name,d.dept_name,e.salary  
+from employees e  
+join departments d  
+on e.dept_id = d.dept_id  
+QUERY 2 : 
+select d.dept_name,count(e.emp_id) as employee_count   
+from departments d   
+left join employees e  
+on d.dept_id = e.dept_id  
+group by d.dept_id,d.dept_name  
+QUERY 3 : 
+select e.emp_id,e.emp_name, e1.emp_name as manager_name  
+from employees e   
+left join employees e1  
+on e.manager_id = e1.emp_id  
+QUERY 4 : 
+select d.dept_name,sum(e.salary)as total_salary  
+from departments d  
+left join employees e  
+on d.dept_id = e.dept_id  
+group by d.dept_id,d.dept_name  
+QUERY 5 : 
+SELECT d.dept_name, 
+AVG(e.salary) AS avg_salary 
+FROM departments d 
+LEFT JOIN employees e 
+ON d.dept_id = e.dept_id 
+GROUP BY d.dept_id, d.dept_name; 
+QUERY 6 : 
+select d.dept_name,avg(e.salary)as avg_salary  
+from departments d  
+left join employees e  
+on d.dept_id = e.dept_id  
+group by d. dept_id, d.dept_name  
+order by avg_salary desc  
+limit 1  
+QUERY 7 : 
+select emp_id,emp_name,salary   
+from employees  
+where salary>(select Avg(salary) from employees)  
+QUERY 8 : 
+select emp_id,emp_name,dept_id, salary  
+from employees e   
+where salary >(  
+select avg(salary)  
+from employees  
+where dept_id = e.dept_id)  
+QUERY 9 : 
+select salary   
+from employees  
+where salary<(  
+select max(salary)  
+from employees)  
+order by salary desc  
+limit 1  
+QUERY 11 : 
+select emp_id,emp_name,dept_id,salary  
+from employees e  
+where salary =(  
+select max(salary)   
+from employees  
+where dept_id = e.dept_id)  
+ 
+QUERY 12 : 
+SELECT emp_id, 
+       emp_name, 
+       dept_id, 
+       salary, 
+       RANK() OVER ( 
+           PARTITION BY dept_id 
+           ORDER BY salary DESC 
+       ) AS salary_rank 
+FROM employees; 
+ 
+QUERY 13: 
+select *  
+from (  
+select emp_id, emp_name, dept _id,salary,  
+rank) over partition by dept_id order by salary desc)as salary _rank   
+from employees  
+）  
+where salary_rank <=3  
+ 
+QUERY 14 : 
+select emp_id,emp_name, hire _date, salary,  
+sum(salary) over(order by hire_date)as running_total_salary  
+from employees  
+  
+QUERY 15 : 
+select c.customer_id,c.customer_name  
+trom customers C  
+left join orders o  
+on c.customer _id = o.customer_id  
+where c .customer_id not in (select customer_id from orders)  
+  
+QUERY 16 : 
+select customer_id, order_id  
+from orders o  
+where order_date = (select max(order_date)  
+                                      from orders  
+                                      where customer_id = o.customer_id)  
+  
+QUERY 17 : 
+select customer_id,sum(amount)  
+from orders  
+group by customer_id  
+ 
+QUERY 18 : 
+Select  customer_id , sum(amount)*100/(select sum(amount) from orders) as customer  
+_contribution  
+from orders  
+group by customer_id  
+  
+QUERY 19 : 
+select customer_name  
+from customers  
+group by customer_name  
+having count(*)>1  
+  
+QUERY 20 : 
+select emp_name, salary,  
+case when salary <80000 then 'Low'  
+                     when salary between 80000 and 120000 then 'Medium'  
+else 'High'  
+end as salary_brand   
+from employees  
+  
+QUERY 21 : 
+SELECT emp_id, 
+       emp_name, 
+       salary 
+FROM employees 
+WHERE salary IN ( 
+    SELECT salary 
+    FROM employees 
+    GROUP BY salary 
+    HAVING COUNT(*) > 1 
+); 
+ 
+QUERY 22 : 
+select c.customer_id,c.customer_name  
+from customers c  
+left join orders o  
+on c. customer _id = o.customer_id  
+group by c.customer_id, c.customer_name  
+having count(*)>3  
+QUERY 23 : 
+select month(order_date) as month_num,sum(amount)   
+from orders  
+group by month(order_date)   
+order by sum(amount) desc  
+limit 1  
+QUERY 24 : 
+select customer_id,order_date,  
+lag(order_date) over(partition by customer_id order by order_date) as previous_date,  
+datediff(order_date, lag(order_date) over(partition by customer_id order by order_date)  
+)as days_differnce  
+from orders  
+QUERY 25 : 
+SELECT d.dept_name  
+FROM departments d  
+JOIN employees e  
+ON d.dept_id = e.dept_id  
+GROUP BY d.dept_name  
+HAVING MAX(e.hire_date) <  
+DATE_SUB(CURDATE(), INTERVAL 2 YEAR); 
